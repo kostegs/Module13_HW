@@ -3,14 +3,16 @@ using UnityEngine;
 public class Rotator : MonoBehaviour
 {
     [SerializeField] private float _rotateSpeed;
-
-    public void Rotate()
-        => transform.Rotate(Vector3.up, _rotateSpeed * Time.deltaTime);
+    [SerializeField] private UserInput _userInput;
 
     private void Update()
     {
-        Rotate();
+        float rotationAngle = _userInput.MouseMovingX * _rotateSpeed * Time.deltaTime;        
+
+        if (rotationAngle != 0)
+            RotateTransformAroundAxis(Vector3.up, rotationAngle);        
     }
 
-    //
+    public void RotateTransformAroundAxis(Vector3 axis, float angle)
+        => transform.Rotate(axis, angle);    
 }
