@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public int Scores => _scores;
+
     [SerializeField] private int _movingSpeed;
     [SerializeField] private int _jumpPower;
 
@@ -16,6 +18,8 @@ public class Player : MonoBehaviour
     private Rigidbody _rigidbody;
     private bool _isGrounded;
     private bool _doJump;
+
+    private int _scores;
 
     private void Awake()
         => _rigidbody = GetComponent<Rigidbody>();
@@ -49,6 +53,12 @@ public class Player : MonoBehaviour
             _isGrounded = false;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<Coin>() != null)
+            _scores++;
+    }
+
     private void CalculateMovingVector()
         => _movingVector = _vectorCalculations.CalculateMovingVector(_userInput.HorizontalInput, _userInput.VerticalInput);
 
@@ -56,5 +66,5 @@ public class Player : MonoBehaviour
     {
         if (_userInput.JumpKeyPressed && _isGrounded)
             _doJump = true;
-    }    
+    }
 }
