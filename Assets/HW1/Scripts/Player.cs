@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     private Rigidbody _rigidbody;
     private bool _isGrounded;
     private bool _doJump;
+    private bool _isJumpingState;
 
     private int _scores;    
 
@@ -27,7 +28,7 @@ public class Player : MonoBehaviour
         
     private void Update()
     {
-        Debug.Log(_isGrounded);
+        //Debug.Log(_isGrounded);
         CalculateMovingVector();
         CalculateJump();
     }
@@ -40,20 +41,25 @@ public class Player : MonoBehaviour
         {
             _jumper.DoJump(_rigidbody, _jumpVector, _jumpPower);
             _doJump = false;
+            _isJumpingState = true;
         }        
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.GetComponent<Ground>() != null)
-            _isGrounded = true;
+        if (collision.collider.GetComponent<Ground>() != null && _isJumpingState)
+            _isJumpingState = false;
+
+        //Debug.Log("On collision Enter");
     }
 
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.collider.GetComponent<Ground>() != null)
-            _isGrounded = false;
-    }
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    if (collision.collider.GetComponent<Ground>() != null)
+    //        _isGrounded = false;
+
+    //    Debug.Log("On collision Exit");
+    //}
 
     private void OnTriggerEnter(Collider other)
     {
@@ -66,7 +72,7 @@ public class Player : MonoBehaviour
         
     private void CalculateJump()
     {
-        if (_userInput.JumpKeyPressed && _isGrounded)
+        if (_userInput.JumpKeyPressed && _isJumpingState == false) 
             _doJump = true;
     }
 }
