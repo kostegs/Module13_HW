@@ -19,11 +19,7 @@ public class Character : MonoBehaviour
     
     private int _groundCollisionCounter;
     private bool _isGrounded;
-
-    //private int _score;
-
-    //public int Score => _score;
-
+        
     private void Awake()
         => _rigidbody = GetComponent<Rigidbody>();
         
@@ -57,16 +53,7 @@ public class Character : MonoBehaviour
         if (collision.collider.GetComponent<Ground>() != null)
             _groundCollisionCounter--;
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.TryGetComponent(out Coin coin))
-    //    {
-    //        _score++;
-    //        coin.Collect();
-    //    }            
-    //}
-
+    
     private void CalculateMovingVector()
         => _movingVector = _orientation.forward * _userInput.VerticalInput + _orientation.right * _userInput.HorizontalInput;
         
