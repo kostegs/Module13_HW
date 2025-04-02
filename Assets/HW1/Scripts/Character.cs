@@ -1,9 +1,7 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Character : MonoBehaviour
 {
-    public int Score => _score;
-
     [SerializeField] private Transform _orientation;
 
     [SerializeField] private int _movingSpeed;
@@ -11,22 +9,28 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Mover _mover;
     [SerializeField] private Jumper _jumper;
-    [SerializeField] private UserInput _userInput;
+    [SerializeField] private UserInput _userInput;    
 
     private Vector3 _movingVector = Vector3.zero;
     private Vector3 _jumpVector = Vector3.up;
     
     private Rigidbody _rigidbody;    
     private bool _doJump;
-    private bool _isJumpingState;
+    
+    private int _groundCollisionCounter;
+    private bool _isGrounded;
 
-    private int _score;    
+    //private int _score;
+
+    //public int Score => _score;
 
     private void Awake()
         => _rigidbody = GetComponent<Rigidbody>();
         
     private void Update()
-    {        
+    {
+        _isGrounded = _groundCollisionCounter > 0;
+
         CalculateMovingVector();
         CalculateJump();
     }
@@ -39,28 +43,36 @@ public class Player : MonoBehaviour
         {
             _jumper.DoJump(_rigidbody, _jumpVector, _jumpPower);
             _doJump = false;
-            _isJumpingState = true;
-        }        
+        }                    
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.GetComponent<Ground>() != null && _isJumpingState)
-            _isJumpingState = false;
+        if (collision.collider.GetComponent<Ground>() != null)
+            _groundCollisionCounter++;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionExit(Collision collision)
     {
-        if (other.GetComponent<Coin>() != null)
-            _score++;
+        if (collision.collider.GetComponent<Ground>() != null)
+            _groundCollisionCounter--;
     }
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.TryGetComponent(out Coin coin))
+    //    {
+    //        _score++;
+    //        coin.Collect();
+    //    }            
+    //}
 
     private void CalculateMovingVector()
         => _movingVector = _orientation.forward * _userInput.VerticalInput + _orientation.right * _userInput.HorizontalInput;
         
     private void CalculateJump()
     {
-        if (_userInput.JumpKeyPressed && _isJumpingState == false) 
+        if (_userInput.JumpKeyPressed && _isGrounded)
             _doJump = true;
-    }
+    }        
 }

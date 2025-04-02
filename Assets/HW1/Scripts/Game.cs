@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class Game : MonoBehaviour
 {
-    [SerializeField] private Player _player;
+    [SerializeField] private Wallet _wallet;
+    [SerializeField] GameObject _characterGameObject;
     [SerializeField] private TextMeshProUGUI _scoreTMP;
     [SerializeField] private TextMeshProUGUI _timerTMP;
     [SerializeField] private string _scoreRemainsText;
@@ -14,7 +15,7 @@ public class Game : MonoBehaviour
 
     private void Update()
     {
-        int currentScore = _player.Score;
+        int currentScore = _wallet.CountOfCoins;
         _scoreTMP.text = $"{_scoreRemainsText} {_maxScoreToWin - currentScore}";
 
         if (currentScore >= _maxScoreToWin)
@@ -28,15 +29,15 @@ public class Game : MonoBehaviour
     }
 
     private void WinGame()
-        => EndGame(_winTMP);
+        => EndGame(_winTMP.gameObject);
 
     private void LooseGame()
-        => EndGame(_looseTMP);
+        => EndGame(_looseTMP.gameObject);
     
-    private void EndGame(TextMeshProUGUI tmp)
+    private void EndGame(GameObject resultMessageGameObject)
     {
-        _player.gameObject.SetActive(false);
-        tmp.gameObject.SetActive(true);
+        _characterGameObject.SetActive(false);
+        resultMessageGameObject.SetActive(true);
         this.gameObject.SetActive(false);
     }
 }

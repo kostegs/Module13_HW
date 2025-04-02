@@ -7,14 +7,11 @@ public class Coin : MonoBehaviour
 
     private void Update()
         => transform.Rotate(Vector3.up, _rotateSpeed * Time.deltaTime);
-
-    private void OnTriggerEnter(Collider other)
+   
+    public void Collect()
     {
-        if (other.GetComponent<Player>())
-        {
-            _effect.transform.position = transform.position;
-            _effect.Play();
-            this.gameObject.SetActive(false);
-        }       
+        _effect.transform.position = transform.position;
+        _effect.Play();
+        this.gameObject.SetActive(false);
     }
 }
