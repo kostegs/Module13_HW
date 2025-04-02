@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class UserInput : MonoBehaviour
@@ -9,17 +8,17 @@ public class UserInput : MonoBehaviour
     private const string MOUSE_Y_AXIS_NAME = "Mouse Y";
     private const KeyCode JUMP_KEY = KeyCode.Space;
 
-    private float _horizontalInput;
-    private float _verticalInput;
-    private float _mouseMovingX;
-    private float _mouseMovingY;
-    private bool _jumpKeyPressed;
-
     public float HorizontalInput => _horizontalInput;
     public float VerticalInput => _verticalInput;
     public bool JumpKeyPressed => _jumpKeyPressed;
     public float MouseMovingX => _mouseMovingX;
     public float MouseMovingY => _mouseMovingY;
+
+    private float _horizontalInput;
+    private float _verticalInput;
+    private float _mouseMovingX;
+    private float _mouseMovingY;
+    private bool _jumpKeyPressed;    
     
     void Update()
     {
