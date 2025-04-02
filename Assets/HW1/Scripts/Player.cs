@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public int Scores => _scores;
+    public int Score => _score;
 
     [SerializeField] private Transform _orientation;
 
@@ -16,19 +16,17 @@ public class Player : MonoBehaviour
     private Vector3 _movingVector = Vector3.zero;
     private Vector3 _jumpVector = Vector3.up;
     
-    private Rigidbody _rigidbody;
-    private bool _isGrounded;
+    private Rigidbody _rigidbody;    
     private bool _doJump;
     private bool _isJumpingState;
 
-    private int _scores;    
+    private int _score;    
 
     private void Awake()
         => _rigidbody = GetComponent<Rigidbody>();
         
     private void Update()
-    {
-        //Debug.Log(_isGrounded);
+    {        
         CalculateMovingVector();
         CalculateJump();
     }
@@ -49,22 +47,12 @@ public class Player : MonoBehaviour
     {
         if (collision.collider.GetComponent<Ground>() != null && _isJumpingState)
             _isJumpingState = false;
-
-        //Debug.Log("On collision Enter");
     }
-
-    //private void OnCollisionExit(Collision collision)
-    //{
-    //    if (collision.collider.GetComponent<Ground>() != null)
-    //        _isGrounded = false;
-
-    //    Debug.Log("On collision Exit");
-    //}
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<Coin>() != null)
-            _scores++;
+            _score++;
     }
 
     private void CalculateMovingVector()
